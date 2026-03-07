@@ -44,20 +44,33 @@ addProduct.forEach((button) => {
       ".product__quantity-value",
     ).innerText;
 
-    let mainDiv = document.createElement("div");
-    mainDiv.classList.add("cart__product");
-    mainDiv.setAttribute("data-id", id);
+    const idList = Array.from(
+      cartProducts.getElementsByClassName("cart__product"),
+    );
+    const exists = idList.findIndex((element) => element.dataset.id === id);
 
-    let img = document.createElement("img");
-    img.classList.add("cart__product-image");
-    img.setAttribute("src", src);
+    if (exists > -1) {
+      const oldValue = Number(
+        idList[exists].querySelector(".cart__product-count").innerText,
+      );
+      idList[exists].querySelector(".cart__product-count").innerText =
+        oldValue + Number(productQuantity);
+    } else {
+      let mainDiv = document.createElement("div");
+      mainDiv.classList.add("cart__product");
+      mainDiv.setAttribute("data-id", id);
 
-    let childDiv = document.createElement("div");
-    childDiv.classList.add("cart__product-count");
-    childDiv.innerText = productQuantity;
+      let img = document.createElement("img");
+      img.classList.add("cart__product-image");
+      img.setAttribute("src", src);
 
-    mainDiv.append(img, childDiv);
+      let childDiv = document.createElement("div");
+      childDiv.classList.add("cart__product-count");
+      childDiv.innerText = productQuantity;
 
-    cartProducts.append(mainDiv);
+      mainDiv.append(img, childDiv);
+
+      cartProducts.append(mainDiv);
+    }
   });
 });
