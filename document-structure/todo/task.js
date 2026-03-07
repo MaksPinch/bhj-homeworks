@@ -5,33 +5,29 @@ const taskList = document.getElementById("tasks__list");
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  let newTask = input.value.trim();
+  let title = input.value.trim();
 
-  if (!newTask) {
-    input.value = "";
-    return;
+  if (!title) {
+    form.reset();
   }
 
-  let task = document.createElement("div");
-  let taskTitle = document.createElement("div");
-  let link = document.createElement("a");
+  taskList.insertAdjacentHTML(
+    "afterBegin",
+    `
+      <div class="task">
+          <div class="task__title">${title}</div>
+          <a href="#" class="task__remove">&times;</a>
+      </div>
+    `,
+  );
 
-  task.classList.add("task");
-  taskTitle.classList.add("task__title");
-  taskTitle.textContent = newTask;
-  link.setAttribute("href", "#");
-  link.classList.add("task__remove");
-  link.innerHTML = "&times;";
+  const link = document.querySelector(".task__remove");
 
-  task.append(taskTitle, link);
-
-  link.addEventListener("click", function (event) {
+  link.addEventListener("click", function(event) {
     event.preventDefault();
 
-    task.remove();
-  });
-
-  taskList.append(task);
+    this.closest(".task").remove();
+  })
 
   form.reset();
 });
